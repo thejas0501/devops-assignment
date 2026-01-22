@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("PM2 app running on port 3000");
 =======
-  res.send("Docker App Running Successfully 🚀");
+  res.send("Docker App Running 🚀 CI/CD Test");
 });
 
 app.listen(3000, () => {
