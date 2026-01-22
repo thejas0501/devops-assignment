@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "pm2-app",
+=======
+  "name": "docker-app",
+>>>>>>> 82f4e5d2d01430778b7d3f7a5f9340b155c54c35
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
