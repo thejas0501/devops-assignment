@@ -1,0 +1,42 @@
+name: Deploy Docker and PM2 Apps
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy Docker App
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DOCKER_EC2_IP }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/devops-assignment/docker-app
+            docker build -t devops-docker-app .
+            docker stop docker-app || true
+            docker rm docker-app || true
+            docker run -d --name docker-app -p 3000:3000 devops-docker-app
+
+  deploy-pm2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy PM2 App
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PM2_EC2_IP }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/devops-assignment/pm2-app
+            npm install
+            pm2 restart pm2-app || pm2 start app.js --name pm2-app
+            pm2 save
